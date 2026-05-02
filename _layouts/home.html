@@ -1,0 +1,94 @@
+---
+layout: default
+---
+<section class="landing-main" aria-label="Landing">
+  <section class="landing-grid" aria-label="Landing Grid">
+    <article class="grid-card grid-card--post-menu" aria-label="Post Menu Tile">
+      <div class="post-menu" aria-label="Post Menu">
+        {% assign nav_posts = site.posts | where_exp: "p", "p.title" | sort: "date" | reverse %}
+        {% capture random_post_urls %}{% for post in nav_posts %}{{ post.url | relative_url }}{% unless forloop.last %}|{% endunless %}{% endfor %}{% endcapture %}
+        <a
+          id="open-random-post"
+          class="post-menu-cta"
+          href="{% if nav_posts.size > 0 %}{{ nav_posts.first.url | relative_url }}{% else %}#{% endif %}"
+          data-posts="{{ random_post_urls }}"
+        >
+          <span class="post-menu-cta-text">Open random Post</span>
+        </a>
+        <section class="post-menu-about" aria-label="About me">
+          <div class="post-menu-about-title">About me</div>
+          <p>I am a first-year student at UW-Stout looking for cybersecurity or IT opportunities this summer.
+              I am a member of the UW-Stout NCL team and am actively training for the Collegiate Cyber Defense Competition (CCDC).
+              To sharpen my technical skills, I manage a personal Proxmox cluster where I build and secure virtualized environments, and public-facing services.
+              I am eager to gain experience in a professional setting.</p>
+          <a class="post-menu-about-resume" href="{{ '/assets/Resume/Nick%20Best%20Resume.pdf' | relative_url }}" download>Download Resume</a>
+        </section>
+      </div>
+    </article>
+    <article class="grid-card grid-card--fingerprint" aria-label="Browser Attribute Box">
+      <div class="fingerprint-wrap">
+        <div class="fingerprint-title">Device Attributes</div>
+        <div id="fingerprint-box" class="fingerprint-box" aria-label="Browser Attributes"></div>
+      </div>
+    </article>
+    <article class="grid-card grid-card--ascii" aria-label="Variable ASCII Tile">
+      <div id="ascii-pretext-tile" class="ascii-wrap">
+        <pre class="ascii-fallback">I like fish</pre>
+        <div class="ascii-output" aria-live="polite"></div>
+      </div>
+    </article>
+    <article class="grid-card" aria-label="Placeholder Tile"></article>
+    <article class="grid-card grid-card--video" aria-label="Video Tile">
+      <video class="tile-video" autoplay loop muted playsinline preload="auto">
+        <source src="{{ '/assets/videos/compressed_fish.mp4' | relative_url }}" type="video/mp4">
+        Your browser cannot play this video.
+      </video>
+    </article>
+    <article class="grid-card grid-card--quote" aria-label="Daily Quote Box">
+      <div id="daily-quote-box" class="quote-wrap" data-quotes-url="{{ '/quotes.txt' | relative_url }}?v={{ site.time | date: '%s' }}">
+        <div id="daily-quote-table-box" class="quote-table-box fingerprint-box" aria-label="Daily Quote" hidden></div>
+        <div class="quote-title">Recent Vulnerabilities | GitHub Advisories + FIRST EPSS</div>
+        <section id="vuln-alerts-box" class="alerts-wrap" aria-label="Vulnerability Alerts">
+          <div class="alerts-filters" aria-label="Vulnerability Filters">
+            <div class="alerts-filter-cell">
+              <label class="alerts-filter" for="vuln-filter-min-cvss">
+                <span class="alerts-filter-label">Min CVSS</span>
+                <span class="alerts-filter-inline">
+                  <input id="vuln-filter-min-cvss" class="alerts-filter-input" type="number" min="1" max="10" step="0.1" value="7.0" inputmode="decimal">
+                  <span class="alerts-filter-hint">1-10</span>
+                </span>
+              </label>
+            </div>
+            <div class="alerts-filter-cell">
+              <label class="alerts-filter" for="vuln-filter-min-epss">
+                <span class="alerts-filter-label">Min EPSS Percentile</span>
+                <span class="alerts-filter-inline">
+                  <input id="vuln-filter-min-epss" class="alerts-filter-input" type="number" min="1" max="99" step="0.1" value="70" inputmode="decimal">
+                  <span class="alerts-filter-hint">1-99</span>
+                </span>
+              </label>
+            </div>
+            <div class="alerts-filter-cell alerts-filter-cell--window">
+              <label class="alerts-filter alerts-filter--window" for="vuln-filter-window-switch">
+                <span class="alerts-filter-label">Time Window</span>
+                <span class="alerts-window-control">
+                  <span class="alerts-window-text">30 days</span>
+                  <span class="alerts-window-switch-wrap">
+                    <input id="vuln-filter-window-switch" class="alerts-window-switch" type="checkbox" role="switch" aria-label="Switch between 30 and 60 day window">
+                    <span class="alerts-window-slider" aria-hidden="true"></span>
+                  </span>
+                  <span class="alerts-window-text">60 days</span>
+                </span>
+              </label>
+            </div>
+            <div class="alerts-filter-cell alerts-filter-cell--action">
+              <button id="vuln-filter-fetch" class="alerts-fetch-button" type="button">Fetch</button>
+            </div>
+          </div>
+          <div id="vuln-alerts-list" class="alerts-list" aria-live="polite"></div>
+        </section>
+      </div>
+    </article>
+  </section>
+
+</section>

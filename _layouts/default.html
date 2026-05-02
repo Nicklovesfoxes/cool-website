@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="{{ site.baseurl }}/">
+    <meta charset="utf-8">
+    {% if page.layout == 'home' %}
+      <meta name="viewport" content="width=400, initial-scale=1">
+    {% else %}
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endif %}
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  </head>
+  <body>
+    <main class="site-main app-shell {% if page.layout == 'home' %}app-shell-home{% else %}app-shell-fixed{% endif %}">
+      <aside class="left-pane" aria-label="Site Sidebar">
+        <div>
+          <a class="home-link" href="{{ '/' | relative_url }}">Home</a>
+          <ul class="folder-list">
+            {% assign page_groups = site.pages | where_exp: "p", "p.title and p.path contains '/'" | group_by_exp: "p", "p.path | split:'/' | first" | sort: "name" %}
+
+            {% assign posts = site.posts | where_exp: "p", "p.title" | sort: "date" %}
+            {% if posts.size > 0 %}
+              <li>
+                <span>{{ "_posts" | remove: "_" | capitalize }}</span>
+                <ul>
+                  {% for post in posts %}
+                    <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endif %}
+
+            {% for group in page_groups %}
+              {% assign folder_name = group.name | strip %}
+              {% unless folder_name == "" or folder_name == nil or folder_name == "assets" %}
+                {% assign folder_label = folder_name | replace: "_", " " %}
+                {% if folder_label != "" %}
+                  {% assign pages_in_group = group.items | where_exp: "p", "p.title" | sort: "date" %}
+                  {% if pages_in_group.size > 0 %}
+                    <li>
+                      <span>{{ folder_label | capitalize }}</span>
+                      <ul>
+                        {% for nav_page in pages_in_group %}
+                          <li><a href="{{ nav_page.url | relative_url }}">{{ nav_page.title }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% endif %}
+                {% endif %}
+              {% endunless %}
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="sidebar-bottom">
+          <ul class="sidebar-meta">
+            <li>Nichoals Best | Hosted locally</li>
+            <li><a href="https://www.linkedin.com/in/your-linkedin" target="_blank" rel="noreferrer">LinkedIn</a> | bestn2389@my.uwstout.edu</li>
+          </ul>
+        </div>
+      </aside>
+      <section class="content-pane">
+        {{ content }}
+      </section>
+    </main>
+    <script src="{{ '/assets/js/vuln-api-client.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+    <script src="{{ '/assets/js/vuln-threat-engine.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+    <script src="{{ '/assets/js/vuln-renderer.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+    <script src="{{ '/assets/js/vulnerability-alerts.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+    <script src="{{ '/assets/js/site.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+    <script src="{{ '/assets/js/ascii-pretext.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+  </body>
+</html>

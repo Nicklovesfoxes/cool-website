@@ -1,0 +1,14 @@
+title: Homelab Blog and Docs
+description: Elegant self-hosted homelab blog and documentation site.
+url: "https://post.nickloves.me/"
+baseurl: ""
+markdown: kramdown
+permalink: pretty
+timezone: UTC
+kramdown:
+  input: GFM
+  hard_wrap: true
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
