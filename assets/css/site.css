@@ -20,7 +20,7 @@ body {
 :root {
   --sidebar-min: 170px;
   --tile-size: 400px;
-  --grid-gap: 30px;
+  --grid-gap: 25px;
   --cols: 1;
   --accent: #dd7207;
 }
@@ -142,6 +142,12 @@ a {
   display: flex;
   overflow: auto;
   padding: var(--grid-gap);
+
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: var(--grid-gap) var(--grid-gap);
+  background-position: 0 0;
 }
 
 .landing-grid {
@@ -156,27 +162,27 @@ a {
 /*
   Breakpoint math (home layout):
   required width = sidebar-min + [grid width + outer grid padding]
-  = 170 + [cols*400 + (cols-1)*30 + 2*30]
-  = 200 + 430*cols
-  cols=2 => 1060, cols=3 => 1490, cols=4 => 1920, cols=5 => 2350, cols=6 => 2780
+  = 170 + [cols*400 + (cols-1)*25 + 2*25]
+  = 195 + 425*cols
+  cols=2 => 1045, cols=3 => 1470, cols=4 => 1895, cols=5 => 2320, cols=6 => 2745
 */
-@media (min-width: 1060px) {
+@media (min-width: 1045px) {
   :root { --cols: 2; }
 }
 
-@media (min-width: 1490px) {
+@media (min-width: 1470px) {
   :root { --cols: 3; }
 }
 
-@media (min-width: 1920px) {
+@media (min-width: 1895px) {
   :root { --cols: 4; }
 }
 
-@media (min-width: 2350px) {
+@media (min-width: 2320px) {
   :root { --cols: 5; }
 }
 
-@media (min-width: 2780px) {
+@media (min-width: 2745px) {
   :root { --cols: 6; }
 }
 
@@ -1364,6 +1370,7 @@ body > main.site-main.app-shell > section.content-pane > article.doc-page li {
     padding: 0;
     justify-content: center;
     overflow-x: hidden;
+		background-position: calc(50% - (var(--tile-size) / 2)) 0;
   }
 
   .landing-grid {
