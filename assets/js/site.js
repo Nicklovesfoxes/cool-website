@@ -4,71 +4,9 @@ document.documentElement.classList.add("js");
 	"use strict";
 
 	const state = {
-		killed: false,
 		fpAbortController: null,
 		quoteAbortController: null,
-		alertsAbortController: null,
 	};
-
-	// Timer tracking (plus brute-force fallback on kill).
-	const original = {
-		setTimeout: window.setTimeout.bind(window),
-		clearTimeout: window.clearTimeout.bind(window),
-		setInterval: window.setInterval.bind(window),
-		clearInterval: window.clearInterval.bind(window),
-	};
-
-	const activeTimeouts = new Set();
-	const activeIntervals = new Set();
-
-	window.setTimeout = (fn, delay, ...args) => {
-		const id = original.setTimeout(fn, delay, ...args);
-		activeTimeouts.add(id);
-		return id;
-	};
-
-	window.clearTimeout = (id) => {
-		activeTimeouts.delete(id);
-		return original.clearTimeout(id);
-	};
-
-	window.setInterval = (fn, delay, ...args) => {
-		const id = original.setInterval(fn, delay, ...args);
-		activeIntervals.add(id);
-		return id;
-	};
-
-	window.clearInterval = (id) => {
-		activeIntervals.delete(id);
-		return original.clearInterval(id);
-	};
-
-	function clearAllTimers() {
-		for (const id of activeTimeouts) {
-			try { original.clearTimeout(id); } catch { /* ignore */ }
-		}
-		activeTimeouts.clear();
-
-		for (const id of activeIntervals) {
-			try { original.clearInterval(id); } catch { /* ignore */ }
-		}
-		activeIntervals.clear();
-
-		// Brute-force fallback for timers created before this script loaded.
-		try {
-			const highestTimeoutId = original.setTimeout(() => {}, 0);
-			for (let i = 0; i <= highestTimeoutId; i++) original.clearTimeout(i);
-		} catch {
-			// ignore
-		}
-
-		try {
-			const highestIntervalId = original.setInterval(() => {}, 0);
-			for (let i = 0; i <= highestIntervalId; i++) original.clearInterval(i);
-		} catch {
-			// ignore
-		}
-	}
 
 	// 2) Device Attributes (box 2 only)
 	function getWebGLRendererString() {
@@ -244,7 +182,6 @@ document.documentElement.classList.add("js");
 				}
 
 				const data = await safeFetchJson("https://api.ipify.org?format=json", signal);
-				if (state.killed) return;
 				ipCell.textContent = data && data.ip ? String(data.ip) : "Failed";
 				try {
 					console.info("Public IP: fetch success", { ip: ipCell.textContent });
@@ -318,7 +255,6 @@ document.documentElement.classList.add("js");
 				}
 
 				const geo = await safeFetchJson(provider.url, signal);
-				if (state.killed) return;
 
 				const mapped = provider.map(geo);
 				const isp = mapped && mapped.isp ? mapped.isp : "";
@@ -487,7 +423,6 @@ document.documentElement.classList.add("js");
 	}
 
 	function initVulnerabilityAlertsPanel() {
-		if (state.killed) return;
 		const api = window.VulnerabilityAlerts;
 		if (!api || typeof api.init !== "function") return;
 
@@ -506,15 +441,6 @@ document.documentElement.classList.add("js");
 			defaultMinCvss: 7.0,
 			defaultMinEpssPercentile: 70,
 			defaultDaysBack: 30,
-			getKilled: () => state.killed,
-			setAbortController: (controller) => {
-				state.alertsAbortController = controller;
-			},
-			clearAbortController: (controller) => {
-				if (state.alertsAbortController === controller) {
-					state.alertsAbortController = null;
-				}
-			},
 		}).catch(() => {
 			// Ignore module-level failures; UI state is handled inside the module.
 		});
@@ -523,7 +449,6 @@ document.documentElement.classList.add("js");
 	async function initDailyQuote() {
 		const box = document.getElementById("daily-quote-box");
 		if (!box) return;
-		if (state.killed) return;
 
 		initVulnerabilityAlertsPanel();
 
@@ -544,7 +469,6 @@ document.documentElement.classList.add("js");
 
 		try {
 			const quotes = await fetchQuotesFromFile(quotesUrl, quoteController.signal);
-			if (state.killed) return;
 
 			if (!quotes.length) {
 				tableBox.textContent = "No quotes available.";
@@ -570,7 +494,6 @@ document.documentElement.classList.add("js");
 	async function initFingerprinter() {
 		const container = document.getElementById("fingerprint-box");
 		if (!container) return; // box 2 only
-		if (state.killed) return;
 
 		try {
 			if (state.fpAbortController) state.fpAbortController.abort();
@@ -583,7 +506,6 @@ document.documentElement.classList.add("js");
 
 		try {
 			const rows = await collectFingerprintAttributes();
-			if (state.killed) return;
 			const cells = renderFingerprintTable(container, rows);
 
 			// Live System Clock
@@ -591,7 +513,6 @@ document.documentElement.classList.add("js");
 			if (clockCell) {
 				clockCell.textContent = formatClockNow();
 				window.setInterval(() => {
-					if (state.killed) return;
 					clockCell.textContent = formatClockNow();
 				}, 1000);
 			}
@@ -602,7 +523,6 @@ document.documentElement.classList.add("js");
 				window.addEventListener(
 					"mousemove",
 					(e) => {
-						if (state.killed) return;
 						mouseCell.textContent = `${e.clientX}, ${e.clientY}`;
 					},
 					{ passive: true }
@@ -618,7 +538,6 @@ document.documentElement.classList.add("js");
 				} else {
 					try {
 						const battery = await getBattery();
-						if (state.killed) return;
 
 						const renderBattery = () => {
 							const pct = Math.round((battery.level || 0) * 100);
@@ -627,11 +546,9 @@ document.documentElement.classList.add("js");
 
 						renderBattery();
 						battery.addEventListener("levelchange", () => {
-							if (state.killed) return;
 							renderBattery();
 						});
 						battery.addEventListener("chargingchange", () => {
-							if (state.killed) return;
 							renderBattery();
 						});
 					} catch {
@@ -648,7 +565,6 @@ document.documentElement.classList.add("js");
 				};
 				renderWin();
 				window.addEventListener("resize", () => {
-					if (state.killed) return;
 					renderWin();
 				});
 			}
@@ -661,15 +577,12 @@ document.documentElement.classList.add("js");
 				};
 				renderFocus();
 				document.addEventListener("visibilitychange", () => {
-					if (state.killed) return;
 					renderFocus();
 				});
 				window.addEventListener("focus", () => {
-					if (state.killed) return;
 					renderFocus();
 				});
 				window.addEventListener("blur", () => {
-					if (state.killed) return;
 					renderFocus();
 				});
 			}
@@ -681,7 +594,6 @@ document.documentElement.classList.add("js");
 				const cityStateCell = cells.get("City/State");
 				const signal = state.fpAbortController.signal;
 				void initIpAndLocation(cells, signal).catch(() => {
-					if (state.killed) return;
 					if (ipCell && ipCell.textContent === "Fetching...") ipCell.textContent = "Failed";
 					if (ispCell && ispCell.textContent === "Fetching...") ispCell.textContent = "Failed";
 					if (cityStateCell && cityStateCell.textContent === "Fetching...") cityStateCell.textContent = "Failed";
@@ -698,7 +610,6 @@ document.documentElement.classList.add("js");
 	function initVideoTile() {
 		const video = document.querySelector(".tile-video");
 		if (!(video instanceof HTMLVideoElement)) return;
-		if (state.killed) return;
 		const sourceNode = video.querySelector("source");
 		const sourceUrl =
 			(sourceNode && sourceNode.src) ||
@@ -713,7 +624,6 @@ document.documentElement.classList.add("js");
 		video.loop = true;
 
 		const tryPlay = () => {
-			if (state.killed) return;
 			try {
 				const playPromise = video.play();
 				if (playPromise && typeof playPromise.catch === "function") {
@@ -769,7 +679,6 @@ document.documentElement.classList.add("js");
 		const randomLink = document.getElementById("open-random-post");
 		if (randomLink) {
 			randomLink.addEventListener("click", (event) => {
-				if (state.killed) return;
 				event.preventDefault();
 
 				const raw = String(randomLink.getAttribute("data-posts") || "");

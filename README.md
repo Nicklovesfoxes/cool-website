@@ -24,7 +24,7 @@ A self-hosted site for homelab runbooks, technical guides, and interactive tools
 
 ## Architecture Notes
 
-The vulnerability scanner (`vulnerability-alerts.js`) queries GitHub's advisory API and FIRST EPSS, renders results in a master/detail split view, and caches data locally for 24 hours. Device fingerprinting is scoped to the fingerprint tile only. A custom timer tracking system enables a killswitch that clears all timers, aborts active fetches, and cleans up event listeners.
+The vulnerability scanner (`vulnerability-alerts.js`) queries GitHub's advisory API and FIRST EPSS, renders results in a master/detail split view, and caches data locally for 24 hours. Device fingerprinting is scoped to the fingerprint tile only.
 
 ## Status
 
