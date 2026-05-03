@@ -698,7 +698,97 @@ document.documentElement.classList.add("js");
 		}
 	}
 
+	function initSessionLink() {
+		const sessionLink = document.getElementById("session-link");
+		if (!sessionLink) return;
+
+		let overlay = null;
+		let overlayKeydownHandler = null;
+
+		const closeOverlay = () => {
+			try {
+				if (overlayKeydownHandler) {
+					document.removeEventListener("keydown", overlayKeydownHandler);
+				}
+			} catch {
+				// ignore
+			}
+			overlayKeydownHandler = null;
+
+			try {
+				if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+			} catch {
+				// ignore
+			}
+			overlay = null;
+		};
+
+		const openOverlay = () => {
+			if (overlay) return;
+
+			overlay = document.createElement("div");
+			overlay.setAttribute("role", "dialog");
+			overlay.setAttribute("aria-label", "Session Code");
+			overlay.tabIndex = -1;
+			overlay.style.position = "fixed";
+			overlay.style.inset = "0";
+			overlay.style.display = "flex";
+			overlay.style.alignItems = "center";
+			overlay.style.justifyContent = "center";
+			overlay.style.padding = "10px";
+			overlay.style.zIndex = "9999";
+			overlay.style.background = "#202225";
+			overlay.style.cursor = "pointer";
+
+			const img = document.createElement("img");
+			img.alt = "Session code";
+			img.src = new URL("assets/images/Session_code.png", document.baseURI).toString();
+			img.style.maxWidth = "100%";
+			img.style.maxHeight = "100%";
+			img.style.width = "auto";
+			img.style.height = "auto";
+			img.style.objectFit = "contain";
+			img.style.border = "1px solid #ffffff";
+			img.style.cursor = "pointer";
+
+			overlay.appendChild(img);
+
+			overlay.addEventListener(
+				"click",
+				() => {
+					closeOverlay();
+				},
+				{ passive: true }
+			);
+
+			overlayKeydownHandler = (e) => {
+				if (e && e.key === "Escape") {
+					e.preventDefault();
+					closeOverlay();
+				}
+			};
+			document.addEventListener("keydown", overlayKeydownHandler, { passive: false });
+
+			document.body.appendChild(overlay);
+			try {
+				overlay.focus();
+			} catch {
+				// ignore
+			}
+		};
+
+		sessionLink.addEventListener(
+			"click",
+			(event) => {
+				event.preventDefault();
+				openOverlay();
+			},
+			{ passive: false }
+		);
+	}
+
 	initPostMenu();
+	initSessionLink();
 	initVideoTile();
 	initFingerprinter();
 	initDailyQuote();
