@@ -37,7 +37,7 @@ Standard 3-node Proxmox cluster (pve, pve2, pve3) with quorum via corosync, runn
 
 ## Access / Auth
 
-The Proxmox web UI is accessed through Authentik (see [Auth Server](Documentation/VMs/Auth%20Server.md)), the same SSO pattern used for the other public-facing services (see [VPS Proxy](Documentation/Network/VPS%20Proxy.md)).
+The Proxmox web UI is accessed through Authentik (see [Auth Server](/Documentation/VMs/Auth%20Server)), the same SSO pattern used for the other public-facing services (see [VPS Proxy](/Documentation/Network/VPS%20Proxy)).
 
 ## Backups
 
@@ -45,6 +45,6 @@ None yet. This is a known gap - see the [To-Do](/Documentation/To-Do) list ("cen
 
 ---
 
-![](assets/images/Pasted%20image%2020260902122308.png)
+![](/assets/images/Pasted%20image%2020260902122308.png)
 
 

@@ -7,7 +7,7 @@ toc: "true"
 
 ## DoS Attack
 
-Ban the offending IP via Fail2Ban on the VPS (already running on the public-facing proxy - see [VPS Proxy](Documentation/Network/VPS%20Proxy.md)).
+Ban the offending IP via Fail2Ban on the VPS (already running on the public-facing proxy - see [VPS Proxy](/Documentation/Network/VPS%20Proxy)).
 
 ## DDoS Attack
 
@@ -15,19 +15,19 @@ Unplug the router, research current mitigation options, implement whatever's nee
 
 ## VPS Compromised
 
-The VPS is treated as disposable and stateless on purpose (see the "Security" section of [Double NAT](/2026/06/02/Double-NAT-Proxy-architecture/)) - it holds no lab data, so the fix is to destroy and rebuild it rather than try to clean it. Restore from the DigitalOcean snapshot (see [VPS Proxy](Documentation/Network/VPS%20Proxy.md)), then rotate the WireGuard keypair and any secrets it held (Authentik secret key, Caddy config) before reconnecting it to the tunnel.
+The VPS is treated as disposable and stateless on purpose (see the "Security" section of [Double NAT](/2026/06/02/Double-NAT-Proxy-architecture/)) - it holds no lab data, so the fix is to destroy and rebuild it rather than try to clean it. Restore from the DigitalOcean snapshot (see [VPS Proxy](/Documentation/Network/VPS%20Proxy)), then rotate the WireGuard keypair and any secrets it held (Authentik secret key, Caddy config) before reconnecting it to the tunnel.
 
 ## VM or Host Rooted/Hacked
 
-Unplug the affected host or VM's network cable first. VLANs are set up to block cross-talk between segments (see [Switch](Documentation/Network/Switch.md)), so this should contain the problem to that one host/VM. If it's unclear which host or VM is affected, unplug the router as a last resort to cut everything off at once.
+Unplug the affected host or VM's network cable first. VLANs are set up to block cross-talk between segments (see [Switch](/Documentation/Network/Switch)), so this should contain the problem to that one host/VM. If it's unclear which host or VM is affected, unplug the router as a last resort to cut everything off at once.
 
 ## Drive Fails
 
-Look up how to fix it and fix it. There are currently no backups for Proxmox VMs/hosts (see [Host Nodes](Documentation/Proxmox/Host%20nodes.md)) or for the Cisco switch config (see [Switch](Documentation/Network/Switch.md)), so a failure on any of those means rebuilding from scratch, not restoring. The router's boot drive is a known, especially old single point of failure (see [Router](Documentation/Network/Router.md)).
+Look up how to fix it and fix it. There are currently no backups for Proxmox VMs/hosts (see [Host Nodes](/Documentation/Proxmox/Host%20nodes)) or for the Cisco switch config (see [Switch](/Documentation/Network/Switch)), so a failure on any of those means rebuilding from scratch, not restoring. The router's boot drive is a known, especially old single point of failure (see [Router](/Documentation/Network/Router)).
 
 ## WireGuard Tunnel Down
 
-A cron job on the VPS already pages my phone when this happens (see [VPS Proxy](Documentation/Network/VPS%20Proxy.md)). The tunnel is known to sometimes fail to recover on its own after a power outage, for a still-unknown reason (see [Router](Documentation/Network/Router.md)) - if it doesn't come back within a few minutes, log into the router and restart WireGuard manually.
+A cron job on the VPS already pages my phone when this happens (see [VPS Proxy](/Documentation/Network/VPS%20Proxy)). The tunnel is known to sometimes fail to recover on its own after a power outage, for a still-unknown reason (see [Router](/Documentation/Network/Router)) - if it doesn't come back within a few minutes, log into the router and restart WireGuard manually.
 
 ## Power or Internet Is Down
 

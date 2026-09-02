@@ -11,7 +11,7 @@ toc: "true"
 
 This environment utilizes a Virtual Private Server (VPS) as the primary public-facing ingress point. Caddy is deployed on the VPS to handle all external HTTP and HTTPS traffic, managing SSL certificates and routing.
 
-To securely access internal services, the VPS acts as a gateway, connected to the local Proxmox environment via a WireGuard VPN tunnel (see [Router](/Documentation/Network/Router)). Caddy forwards requests through the WireGuard tunnel to the internal `192.168.20.x` subnet, including to Authentik for single sign-on - Authentik runs on its own [Auth Server](Documentation/VMs/Auth%20Server.md) VM, not on the VPS itself.
+To securely access internal services, the VPS acts as a gateway, connected to the local Proxmox environment via a WireGuard VPN tunnel (see [Router](/Documentation/Network/Router)). Caddy forwards requests through the WireGuard tunnel to the internal `192.168.20.x` subnet, including to Authentik for single sign-on - Authentik runs on its own [Auth Server](/Documentation/VMs/Auth%20Server) VM, not on the VPS itself.
 
 Caddy uses Docker and is configured to communicate with other VPS-local containers via a shared external Docker network named `proxy`.
 

@@ -46,7 +46,7 @@ The network is segmented to isolate personal devices and publicly accessible ser
 | **G1/0/23**<br>       | ISP Link - Wan     | Access - VLAN 100                       |
 | **G1/0/24**<br>       | (Management)       | Access - VLAN 30                        |
 
-![](assets/images/Pasted%20image%2020260721142608.png)
+![](/assets/images/Pasted%20image%2020260721142608.png)
 
 
 ---

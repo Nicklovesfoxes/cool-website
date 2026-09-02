@@ -35,7 +35,7 @@ toc: "true"
 | **CloudInit Drive**   | `local-lvm:vm-102-cloudinit` (ide2)                                   |
 | **Network (net0)**    | virtio, bridge=vmbr0, firewall=1, VLAN tag=20 (Servers)               |
 
-Storage pool is whatever's local to the host node it's cloned on (currently `pve`, using `local-lvm`) - see [Host Nodes](Documentation/Proxmox/Host%20nodes.md).
+Storage pool is whatever's local to the host node it's cloned on (currently `pve`, using `local-lvm`) - see [Host Nodes](/Documentation/Proxmox/Host%20nodes).
 
 ## Cloning Convention
 

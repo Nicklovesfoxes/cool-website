@@ -17,7 +17,7 @@ Nothing is let in the wan, all inbound is through the WireGuard tunnel, the vlan
 ---
 ## WireGuard
 
-A Virtual Private Server (VPS) is used to expose internal services securely. The VPS server routes traffic through this tunnel (see [VPS Proxy](Documentation/Network/VPS%20Proxy.md)).
+A Virtual Private Server (VPS) is used to expose internal services securely. The VPS server routes traffic through this tunnel (see [VPS Proxy](/Documentation/Network/VPS%20Proxy)).
 
 | **Configuration Item** | **Value**                       | **Note**                                           |
 | ---------------------- | ------------------------------- | -------------------------------------------------- |
@@ -50,5 +50,5 @@ Small parts on the WAN link are set up to look like a windows PC from the WAN si
 
 ## Subnet mask
 
-![](assets/images/Pasted%20image%2020260717132536.png)
+![](/assets/images/Pasted%20image%2020260717132536.png)
 Don't make this mistake again use the correct subnet mask on new interfaces. 

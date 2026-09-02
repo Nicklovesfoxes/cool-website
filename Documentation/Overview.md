@@ -4,7 +4,7 @@ title: Overview
 description: Homelab overview
 toc: "true"
 ---
-![](assets/images/Copy%20of%20Home%20Lab%204_13_2026.jpeg)
+![](/assets/images/Copy%20of%20Home%20Lab%204_13_2026.jpeg)
 
 > Device-specific detail lives in its own page.
 

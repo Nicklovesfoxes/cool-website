@@ -6,7 +6,7 @@ description: Why routing homelab traffic through a VPS and a WireGuard tunnel be
 ---
 "Double NAT" has a bad reputation. It shows up on forums as the thing breaking your game console's matchmaking, the reason your security camera app won't connect, the mystery setting your ISP's combo router hides from you. On a university network or behind CGNAT, a second layer of NAT usually means inbound connections are simply impossible - there is no public IP to forward a port on in the first place.
 
-![](assets/images/Pasted%20image%2020260707205744.png)
+![](/assets/images/Pasted%20image%2020260707205744.png)
 > Double NAT happens when you have two routers connected in a row on the same network. It causes problems because the first router (the one connected directly to your ISP) acts as a firewall and blocks incoming connections meant for devices connected to the second router.
 
 
@@ -20,7 +20,7 @@ Once you accept that inbound port forwarding isn't an option, or isn't desirable
 
 #### 1. Flexibility
 
-Every internal service gets its own subdomain instead of its own port forward. Looking at the current Caddyfile in [VMs / Services](Documentation/VMs/Game%20Server.md), `auth.nickloves.me`, `proxmox.nickloves.me`, `post.nickloves.me`, and `audio.nickloves.me` all route through the same VPS to completely different machines and ports on the `192.168.20.0/24` server VLAN. Adding a new service is a few lines in a Caddyfile and a container restart - no router configuration, no new forwarded port, no coordination with an ISP-controlled gateway.
+Every internal service gets its own subdomain instead of its own port forward. Looking at the current Caddyfile in [VMs / Services](/Documentation/VMs/Game%20Server), `auth.nickloves.me`, `proxmox.nickloves.me`, `post.nickloves.me`, and `audio.nickloves.me` all route through the same VPS to completely different machines and ports on the `192.168.20.0/24` server VLAN. Adding a new service is a few lines in a Caddyfile and a container restart - no router configuration, no new forwarded port, no coordination with an ISP-controlled gateway.
 
 #### 2. Portability
 
@@ -43,7 +43,7 @@ The home router never has an open inbound port and never appears in Shodan-style
 
 #### 4. Lab Environment vs. Deployment Environment
 
-The VPS is the stable, boring, "deployment" surface. The homelab behind it is free to be an actual lab: switches get rebooted, VLANs get restructured, and per the [To-Do](Documentation/To-Do.md) list, things like basic red-team exercises against the internal network are on the roadmap. None of that risks the public-facing endpoint, because the public-facing endpoint isn't in the same failure domain. Breaking something at home just means a Caddy site returns a 502 until the tunnel or container comes back - it doesn't expose anything new to the internet in the process.
+The VPS is the stable, boring, "deployment" surface. The homelab behind it is free to be an actual lab: switches get rebooted, VLANs get restructured, and per the [To-Do](/Documentation/To-Do) list, things like basic red-team exercises against the internal network are on the roadmap. None of that risks the public-facing endpoint, because the public-facing endpoint isn't in the same failure domain. Breaking something at home just means a Caddy site returns a 502 until the tunnel or container comes back - it doesn't expose anything new to the internet in the process.
 
 ---
 
@@ -53,7 +53,7 @@ None of this is free. A single home router doing NAT and port forwarding is one 
 
 A few specific costs worth calling out:
 
-- Extra hop, extra latency. Every request now travels client → VPS → tunnel → home server and back, instead of client → home server directly.
+- Extra hop, extra latency. Every request now travels client â†’ VPS â†’ tunnel â†’ home server and back, instead of client â†’ home server directly.
 - MTU problems. WireGuard's overhead shrinks the effective MTU of everything riding through the tunnel. The [Overview](/Documentation/Overview) doc sums this up as bluntly as possible: "MTU likes to break stuff watch out for it."
 - Tunnel state is now a dependency. If the WireGuard handshake doesn't stay alive, every service behind it goes dark at once, even though each one is otherwise healthy. The `PersistentKeepalive` setting covered in the [VPS Reverse Proxy](/2026/04/14/VPS-Reverse-proxy/) post exists specifically to fight this.
 - Debugging gets a layer. A 502 could mean the container crashed, the tunnel dropped, or Caddy can't reach the internal IP - three places to check instead of one.
