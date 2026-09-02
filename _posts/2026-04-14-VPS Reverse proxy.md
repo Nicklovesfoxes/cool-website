@@ -71,6 +71,8 @@ Use a private subnet specifically for the VPN tunnel (e.g., `10.10.0.x`):
 
 Once the tunnel is active, the VPS can communicate with the home network entirely bypassing the public internet.
 
+[screen shoot of `wg show` on the VPS confirming a successful handshake with the router peer]
+
 > This is an example `/etc/wireguard/wg0.conf` file, This is from the VPS (sever) perspective allowing my router (peer) `10.10.0.2/32` and my local servers subnet `192.168.20.0/24`.
 
 ``` Toml
@@ -180,6 +182,8 @@ sudo docker compose up -d
 ```
 
 > Caddy will instantly boot, read your domain names, automatically fetch SSL certificates, and securely pipe the traffic down your WireGuard tunnel to your local server.
+
+[screen shoot of the site loading over HTTPS with a valid Let's Encrypt certificate]
 
 ---
 ### Post-Deployment Security

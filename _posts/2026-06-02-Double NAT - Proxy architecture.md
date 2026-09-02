@@ -20,7 +20,7 @@ Once you accept that inbound port forwarding isn't an option, or isn't desirable
 
 #### 1. Flexibility
 
-Every internal service gets its own subdomain instead of its own port forward. Looking at the current Caddyfile in [Config](Documentation/Config.md), `auth.nickloves.me`, `proxmox.nickloves.me`, `post.nickloves.me`, and `audio.nickloves.me` all route through the same VPS to completely different machines and ports on the `192.168.20.0/24` server VLAN. Adding a new service is a few lines in a Caddyfile and a container restart - no router configuration, no new forwarded port, no coordination with an ISP-controlled gateway.
+Every internal service gets its own subdomain instead of its own port forward. Looking at the current Caddyfile in [VMs / Services](Documentation/VMs/Game%20Server.md), `auth.nickloves.me`, `proxmox.nickloves.me`, `post.nickloves.me`, and `audio.nickloves.me` all route through the same VPS to completely different machines and ports on the `192.168.20.0/24` server VLAN. Adding a new service is a few lines in a Caddyfile and a container restart - no router configuration, no new forwarded port, no coordination with an ISP-controlled gateway.
 
 #### 2. Portability
 
@@ -53,11 +53,10 @@ None of this is free. A single home router doing NAT and port forwarding is one 
 
 A few specific costs worth calling out:
 
-- **Extra hop, extra latency.** Every request now travels client → VPS → tunnel → home server and back, instead of client → home server directly.
-- **MTU problems.** WireGuard's overhead shrinks the effective MTU of everything riding through the tunnel. The [Home Lab Documentation](/Documentation/Home%20Lab%20Documentation) sums this up as bluntly as possible: "MTU likes to break stuff watch out for it."
-- **Tunnel state is now a dependency.** If the WireGuard handshake doesn't stay alive, every service behind it goes dark at once, even though each one is otherwise healthy. The `PersistentKeepalive` setting covered in the [VPS Reverse Proxy](/2026/04/14/VPS-Reverse-proxy/) post exists specifically to fight this.
-- **Debugging gets a layer.** A 502 could mean the container crashed, the tunnel dropped, or Caddy can't reach the internal IP - three places to check instead of one.
-- **New single points of failure.** The [Home Lab Documentation](/Documentation/Home%20Lab%20Documentation) already flags the current one: a 15+ year old SATA drive booting pfSense. A more elaborate architecture doesn't remove single points of failure, it just relocates and multiplies them.
+- Extra hop, extra latency. Every request now travels client → VPS → tunnel → home server and back, instead of client → home server directly.
+- MTU problems. WireGuard's overhead shrinks the effective MTU of everything riding through the tunnel. The [Overview](/Documentation/Overview) doc sums this up as bluntly as possible: "MTU likes to break stuff watch out for it."
+- Tunnel state is now a dependency. If the WireGuard handshake doesn't stay alive, every service behind it goes dark at once, even though each one is otherwise healthy. The `PersistentKeepalive` setting covered in the [VPS Reverse Proxy](/2026/04/14/VPS-Reverse-proxy/) post exists specifically to fight this.
+- Debugging gets a layer. A 502 could mean the container crashed, the tunnel dropped, or Caddy can't reach the internal IP - three places to check instead of one.
 
 ---
 

@@ -90,11 +90,23 @@ a {
 }
 
 .folder-list > li {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .folder-list > li > span {
+  display: block;
+  font-weight: 400;
+  font-size: 1.15em;
   color: var(--accent-dark);
+  margin-bottom: 8px;
+}
+
+.folder-list-sub {
+  display: block;
+  font-weight: 400;
+  font-size: 1.15em;
+  color: #CBCCCD;
+  margin: 10px 0 2px;
 }
 
 .folder-list ul {
@@ -112,7 +124,8 @@ a {
   display: block;
   padding: 3px 6px;
   margin: 0 -6px;
-  border-radius: 3px;
+  border-radius: 0;
+  transition: transform 150ms ease;
 }
 
 .folder-list li > a::before {
@@ -125,6 +138,26 @@ a {
   opacity: 0;
   transition: opacity 200ms ease;
   pointer-events: none;
+}
+
+/* Direct links one level under a top folder (e.g. Posts items, or Documentation's
+   Overview/Cost/To-Do) - stretch the gradient past the row's own box so it spans
+   the full sidebar panel edge-to-edge instead of stopping at the 12px indent. */
+.folder-list > li > ul > li > a::before {
+  left: -16px;
+  right: -4px;
+}
+
+/* Links nested one level deeper still, inside a subfolder group (e.g. Network > Router) -
+   same idea, just compensating for the extra 12px of indent. */
+.folder-list > li > ul > li > ul > li > a::before {
+  left: -28px;
+  right: -4px;
+}
+
+.folder-list li > a:hover,
+.folder-list li > a:focus-visible {
+  transform: translateX(6px);
 }
 
 .folder-list li > a:hover::before,

@@ -18,5 +18,6 @@ toc: "true"
 | Cisco M4 sever                                 | 70       | Random Guy                            | Very Used     |
 | Custom Router                                  | ~50      | My own Junk                           | Very Used     |
 | M.2 SATA 32 Gig                                | 16       | Amazon                                | New           |
-| 2x SFP+ Custom Cables                          | 47       |                                       | New           |
+| 2x SFP+ Custom Cables                          | 47       | fs.com                                | New           |
+| VPS                                            | 0        | Digital ocean (One year free Credit)  | New           |
 

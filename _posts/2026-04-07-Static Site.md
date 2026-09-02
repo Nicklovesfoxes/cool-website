@@ -109,6 +109,8 @@ jobs:
 
 _Commit and push these files to GitHub. If you navigate to your repository's "Actions" tab, you should see your image building and publishing to the GHCR._
 
+[screen shoot of the GitHub Actions tab showing the build succeeding and the image published to GHCR]
+
 ---
 ### Step 3: Set Up the Home Server
 
@@ -174,6 +176,8 @@ sudo docker compose up -d
 ```
 
 Check it it's running go to `yourlocalserverIP:8080` , example `192.168.20.5:8080`
+
+[screen shoot of the site loading in a browser at the local server's IP and port]
 
 ---
 ### Step 4: Connect the Reverse Proxy

@@ -11,7 +11,7 @@
     <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ page.description | default: site.description }}">
     <link rel="icon" href="data:,">
-    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}?v={{ site.time | date: '%s' }}">
   </head>
   <body>
     <main class="site-main app-shell {% if page.layout == 'home' %}app-shell-home{% else %}app-shell-fixed{% endif %}">
@@ -38,13 +38,44 @@
               {% unless folder_name == "" or folder_name == nil or folder_name == "assets" %}
                 {% assign folder_label = folder_name | replace: "_", " " %}
                 {% if folder_label != "" %}
-                  {% assign pages_in_group = group.items | where_exp: "p", "p.title" | sort: "date" %}
+                  {% assign pages_in_group = group.items | where_exp: "p", "p.title" | sort: "title" %}
+
+                  {% comment %} Precompute each page's path relative to this folder, and its subfolder (if any) - done via plain assign so filter chains are allowed. {% endcomment %}
+                  {% assign folder_prefix = folder_name | append: "/" %}
+                  {% assign sub_names_raw = "" %}
+                  {% for p in pages_in_group %}
+                    {% assign p_rest = p.path | remove_first: folder_prefix %}
+                    {% assign p_parts = p_rest | split: "/" %}
+                    {% if p_parts.size > 1 %}
+                      {% assign sub_names_raw = sub_names_raw | append: p_parts[0] | append: "|" %}
+                    {% endif %}
+                  {% endfor %}
+                  {% assign sub_names = sub_names_raw | split: "|" | uniq | sort %}
+
                   {% if pages_in_group.size > 0 %}
                     <li>
                       <span>{{ folder_label | capitalize }}</span>
                       <ul>
-                        {% for nav_page in pages_in_group %}
-                          <li><a href="{{ nav_page.url | relative_url }}">{{ nav_page.title }}</a></li>
+                        {% for p in pages_in_group %}
+                          {% assign p_rest = p.path | remove_first: folder_prefix %}
+                          {% assign p_parts = p_rest | split: "/" %}
+                          {% if p_parts.size == 1 %}
+                            <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% for sub_name in sub_names %}
+                          <li>
+                            <span class="folder-list-sub">{{ sub_name | replace: "_", " " | capitalize }}</span>
+                            <ul>
+                              {% for p in pages_in_group %}
+                                {% assign p_rest = p.path | remove_first: folder_prefix %}
+                                {% assign p_parts = p_rest | split: "/" %}
+                                {% if p_parts.size > 1 and p_parts[0] == sub_name %}
+                                  <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
+                                {% endif %}
+                              {% endfor %}
+                            </ul>
+                          </li>
                         {% endfor %}
                       </ul>
                     </li>
