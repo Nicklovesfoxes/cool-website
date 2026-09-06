@@ -1,6 +1,6 @@
 # Homelab Blog & Documentation
 
-A self-hosted site for homelab runbooks, technical guides, and interactive tools. Built with Jekyll and vanilla JavaScript.
+A site for homelab documentation Built with Jekyll and vanilla JavaScript.
 
 ## Content
 
@@ -12,15 +12,12 @@ A self-hosted site for homelab runbooks, technical guides, and interactive tools
 
 - **Vulnerability Alerts**: Browser-based CVE scanner integrating GitHub advisories and FIRST EPSS data with granular filtering (CVSS score, EPSS percentile, time windows)
 - **Device Fingerprinting**: WebGL renderer detection, GPU info, and device capabilities
-- **Minimal Design**: Grid-based tile layout, dark mode, no frameworks
-- **Performance Optimized**: Strategic timer management, fetch abort controllers, localStorage caching
 
-## Tech Stack
+## Stack
 
 - **Static Site Generator**: Jekyll with Kramdown
 - **Styling**: Vanilla CSS with CSS variables
 - **Interactives**: Vanilla JavaScript (no frameworks)
-- **Hosting**: Docker + Caddy reverse proxy (normally on homelab, currently on GitHub)
 
 ## Architecture Notes
 
