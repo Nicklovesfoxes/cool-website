@@ -73,7 +73,12 @@ a {
   position: sticky;
   top: 0;
   align-self: start;
-  min-height: 100vh;
+  height: 100vh;
+}
+
+.sidebar-scroll {
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .home-link {
@@ -867,7 +872,7 @@ a {
 }
 
 .alerts-detail {
-  background: #202225;
+  background: #000000;
   min-width: 0;
   min-height: 0;
   overflow: auto;
@@ -1416,6 +1421,46 @@ body > main.site-main.app-shell > section.content-pane > article.doc-page li {
   margin-bottom: 0.33rem;
 }
 
+.task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.task-list-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-list-item-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  border: 1px solid #ffffff;
+  background: transparent;
+  position: relative;
+}
+
+.task-list-item-checkbox:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.task-list-item-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid #000000;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
 /* Keep visible table lines for the single-row quote table. */
 .quote-table-box.fingerprint-box .quote-table td,
 .quote-table-box.fingerprint-box .quote-table tbody tr:last-child td {
@@ -1439,9 +1484,14 @@ body > main.site-main.app-shell > section.content-pane > article.doc-page li {
 
   .left-pane {
     position: static;
+    height: auto;
     min-height: auto;
     border-right: 0;
     border-bottom: 1px solid #ffffff;
+  }
+
+  .sidebar-scroll {
+    overflow-y: visible;
   }
 
   .landing-main {

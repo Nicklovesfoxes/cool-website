@@ -16,7 +16,7 @@
   <body>
     <main class="site-main app-shell {% if page.layout == 'home' %}app-shell-home{% else %}app-shell-fixed{% endif %}">
       <aside class="left-pane" aria-label="Site Sidebar">
-        <div>
+        <div class="sidebar-scroll">
           <a class="home-link" href="{{ '/' | relative_url }}">Home</a>
           <ul class="folder-list">
             {% assign page_groups = site.pages | where_exp: "p", "p.title and p.path contains '/'" | group_by_exp: "p", "p.path | split:'/' | first" | sort: "name" %}
