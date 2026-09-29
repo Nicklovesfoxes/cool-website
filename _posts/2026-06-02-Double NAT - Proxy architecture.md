@@ -6,7 +6,6 @@ description: Why routing homelab traffic through a VPS and a WireGuard tunnel be
 ---
 "Double NAT" has a bad reputation. It shows up on forums as the thing breaking your game console's matchmaking, the reason your security camera app won't connect, the mystery setting your ISP's combo router hides from you. On a university network or behind CGNAT, a second layer of NAT usually means inbound connections are simply impossible - there is no public IP to forward a port on in the first place.
 
-![](/assets/images/Pasted%20image%2020260707205744.png)
 > Double NAT happens when you have two routers connected in a row on the same network. It causes problems because the first router (the one connected directly to your ISP) acts as a firewall and blocks incoming connections meant for devices connected to the second router.
 
 
